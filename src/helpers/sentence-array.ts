@@ -14,37 +14,37 @@ export class SentenceArray {
             break;
           case 'OR':
             if (sentence !== '') {
-              props.push(sentence.toLowerCase().trimLeft());
+              props.push(sentence.toLowerCase().trim());
               props.push('|');
               sentence = '';
             }
             break;
           case 'THEN':
             if (sentence !== '') {
-              props.push(sentence.toLowerCase().trimLeft());
+              props.push(sentence.toLowerCase().trim());
               props.push('->');
               sentence = '';
             }
             break;
           case 'AND':
             if (sentence !== '') {
-              props.push(sentence.toLowerCase().trimLeft());
+              props.push(sentence.toLowerCase().trim());
               props.push('&');
               sentence = '';
             }
             break;
           case 'IFF':
             if (sentence !== '') {
-              props.push(sentence.toLowerCase().trimLeft());
+              props.push(sentence.toLowerCase().trim());
               sentence = '';
               props.push('<->');
             }
             break;
           case '.':
-            props.push(sentence.toLowerCase().trimLeft());
+            props.push(sentence.toLowerCase().trim());
             break;
           case 'NOT':
-            sentence = `~${sentence.trimLeft()}`;
+            sentence = `~${sentence.trim()}`;
             break;
           default:
             sentence = `${sentence} ${w}`;
