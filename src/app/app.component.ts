@@ -11,9 +11,7 @@ export class AppComponent implements OnInit {
   graph: any;
 
   ngOnInit() {
-    let el = <HTMLElement>document.getElementsByClassName('graph')[0];
-
-    debugger;
+    const el = <HTMLElement>document.getElementsByClassName('graph')[0];
 
     this.graph = new Graph(
       el.offsetWidth,
