@@ -40,7 +40,7 @@ export class Graph {
 
     // init D3 force layout
     const force = d3.forceSimulation()
-      .force('link', d3.forceLink().id((d:any) => d.id).distance(150))
+      .force('link', d3.forceLink().id((d: any) => d.id).distance(150))
       .force('charge', d3.forceManyBody().strength(-500))
       .force('x', d3.forceX(this.width / 2))
       .force('y', d3.forceY(this.height / 2))
@@ -48,18 +48,22 @@ export class Graph {
 
     // init D3 drag support
     const drag = d3.drag()
-      .on('start', (d:any) => {
-        if (!d3.event.active) force.alphaTarget(0.3).restart();
+      .on('start', (d: any) => {
+        if (!d3.event.active) {
+          force.alphaTarget(0.3).restart();
+        }
 
         d.fx = d.x;
         d.fy = d.y;
       })
-      .on('drag', (d:any) => {
+      .on('drag', (d: any) => {
         d.fx = d3.event.x;
         d.fy = d3.event.y;
       })
-      .on('end', (d:any) => {
-        if (!d3.event.active) force.alphaTarget(0);
+      .on('end', (d: any) => {
+        if (!d3.event.active) {
+          force.alphaTarget(0);
+        }
 
         d.fx = null;
         d.fy = null;
@@ -113,7 +117,7 @@ export class Graph {
     // update force layout (called automatically each iteration)
     function tick() {
       // draw directed edges with proper padding from node centers
-      path.attr('d', (d:any) => {
+      path.attr('d', (d: any) => {
         const deltaX = d.target.x - d.source.x;
         const deltaY = d.target.y - d.source.y;
         const dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -129,7 +133,7 @@ export class Graph {
         return `M${sourceX},${sourceY}L${targetX},${targetY}`;
       });
 
-      circle.attr('transform', (d:any) => `translate(${d.x},${d.y})`);
+      circle.attr('transform', (d: any) => `translate(${d.x},${d.y})`);
     }
 
     // update graph (called when needed)
@@ -139,8 +143,8 @@ export class Graph {
 
       // update existing links
       path.classed('selected', (d) => d === selectedLink)
-        .style('marker-start', (d:any) => d.left ? 'url(#start-arrow)' : '')
-        .style('marker-end', (d:any) => d.right ? 'url(#end-arrow)' : '');
+        .style('marker-start', (d: any) => d.left ? 'url(#start-arrow)' : '')
+        .style('marker-end', (d: any) => d.right ? 'url(#end-arrow)' : '');
 
       // remove old links
       path.exit().remove();
@@ -149,10 +153,12 @@ export class Graph {
       path = path.enter().append('svg:path')
         .attr('class', 'link')
         .classed('selected', (d) => d === selectedLink)
-        .style('marker-start', (d:any) => d.left ? 'url(#start-arrow)' : '')
-        .style('marker-end', (d:any) => d.right ? 'url(#end-arrow)' : '')
+        .style('marker-start', (d: any) => d.left ? 'url(#start-arrow)' : '')
+        .style('marker-end', (d: any) => d.right ? 'url(#end-arrow)' : '')
         .on('mousedown', (d) => {
-          if (d3.event.ctrlKey) return;
+          if (d3.event.ctrlKey) {
+            return;
+          }
 
           // select link
           mousedownLink = d;
@@ -164,12 +170,12 @@ export class Graph {
 
       // circle (node) group
       // NB: the function arg is crucial here! nodes are known by id, not by index!
-      circle = circle.data(nodes, (d:any) => d.id);
+      circle = circle.data(nodes, (d: any) => d.id);
 
       // update existing nodes (reflexive & selected visual states)
       circle.selectAll('circle')
-        .style('fill', (d:any) => (d === selectedNode) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id))
-        .classed('reflexive', (d:any) => d.reflexive);
+        .style('fill', (d: any) => (d === selectedNode) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id))
+        .classed('reflexive', (d: any) => d.reflexive);
 
       // remove old nodes
       circle.exit().remove();
@@ -180,21 +186,27 @@ export class Graph {
       g.append('svg:circle')
         .attr('class', 'node')
         .attr('r', 12)
-        .style('fill', (d:any) => (d === selectedNode) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id))
-        .style('stroke', (d:any) => d3.rgb(colors(d.id)).darker().toString())
-        .classed('reflexive', (d:any) => d.reflexive)
+        .style('fill', (d: any) => (d === selectedNode) ? d3.rgb(colors(d.id)).brighter().toString() : colors(d.id))
+        .style('stroke', (d: any) => d3.rgb(colors(d.id)).darker().toString())
+        .classed('reflexive', (d: any) => d.reflexive)
         .on('mouseover', function (d) {
-          if (!mousedownNode || d === mousedownNode) return;
+          if (!mousedownNode || d === mousedownNode) {
+            return;
+          }
           // enlarge target node
           d3.select(this).attr('transform', 'scale(1.1)');
         })
         .on('mouseout', function (d) {
-          if (!mousedownNode || d === mousedownNode) return;
+          if (!mousedownNode || d === mousedownNode) {
+            return;
+          }
           // unenlarge target node
           d3.select(this).attr('transform', '');
         })
         .on('mousedown', (d) => {
-          if (d3.event.ctrlKey) return;
+          if (d3.event.ctrlKey) {
+            return;
+          }
 
           // select node
           mousedownNode = d;
@@ -210,7 +222,9 @@ export class Graph {
           restart();
         })
         .on('mouseup', function (d) {
-          if (!mousedownNode) return;
+          if (!mousedownNode) {
+            return;
+          }
 
           // needed by FF
           dragLine
@@ -251,7 +265,7 @@ export class Graph {
         .attr('x', 0)
         .attr('y', 4)
         .attr('class', 'id')
-        .text((d:any) => d.id);
+        .text((d: any) => d.id);
 
       circle = g.merge(circle);
 
@@ -267,7 +281,9 @@ export class Graph {
       // because :active only works in WebKit?
       svg.classed('active', true);
 
-      if (d3.event.ctrlKey || mousedownNode || mousedownLink) return;
+      if (d3.event.ctrlKey || mousedownNode || mousedownLink) {
+        return;
+      }
 
       // insert new node at point
       const point = d3.mouse(this);
@@ -278,7 +294,9 @@ export class Graph {
     }
 
     function mousemove() {
-      if (!mousedownNode) return;
+      if (!mousedownNode) {
+        return;
+      }
 
       // update drag line
       dragLine.attr('d', `M${mousedownNode.x},${mousedownNode.y}L${d3.mouse(this)[0]},${d3.mouse(this)[1]}`);
@@ -312,7 +330,10 @@ export class Graph {
     let lastKeyDown = -1;
 
     function keydown() {
-      if (lastKeyDown !== -1) return;
+      if (lastKeyDown !== -1) {
+        return;
+      }
+
       lastKeyDown = d3.event.keyCode;
 
       // ctrl
@@ -321,7 +342,9 @@ export class Graph {
         svg.classed('ctrl', true);
       }
 
-      if (!selectedNode && !selectedLink) return;
+      if (!selectedNode && !selectedLink) {
+        return;
+      }
 
       switch (d3.event.keyCode) {
         case 8: // backspace
