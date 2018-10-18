@@ -1,2 +1,6 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import './app/app.component.scss';
+
+html, body {
+  height:100%;
+}
